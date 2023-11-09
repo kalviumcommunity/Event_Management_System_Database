@@ -93,4 +93,59 @@ CREATE TABLE EventOrganizer (
 DROP TABLE EventOrganizer;
 DROP TABLE EventVenue;
 
--- DROP DATABASE EventManagement; 
+-- DML COMMANDS
+
+-- Venue data
+INSERT INTO Venue (VenueID, Name, Address, Capacity)
+VALUES (1, 'Shanti Devi Mittal Auditorium', 'Block 35', 3000);
+
+INSERT INTO Venue (VenueID, Name, Address, Capacity)
+VALUES (2, 'Uni Polis', 'Block 14', 5000);
+
+INSERT INTO Venue (VenueID, Name, Address, Capacity)
+VALUES (3, 'DSW Stage', 'Block 13', 200);
+
+-- Organizer data
+INSERT INTO Organizer (OrganizerID, Name, Email, Phone)
+VALUES (1, 'Oasis', 'oasis.lpu@gmail.com', '1234567890');
+
+INSERT INTO Organizer (OrganizerID, Name, Email, Phone)
+VALUES (2, 'PentaOmnia', 'pentaomnia.lpu@gmail.com', '9876543210');
+
+INSERT INTO Organizer (OrganizerID, Name, Email, Phone)
+VALUES (3, 'Eventicia', 'eventicia.lpu@gmail.com', '9876501234');
+
+-- Attendee data
+INSERT INTO Attendee (AttendeeID, Name, Email, Phone)
+VALUES (1, 'Chandan SM', 'chandan@example.com', '8311321987');
+
+INSERT INTO Attendee (AttendeeID, Name, Email, Phone)
+VALUES (2, 'Virat', 'virat@example.com', '8937438442');
+
+-- Event data
+INSERT INTO Event (EventID, Title, Description, Date, Time, VenueID, OrganizerID)
+VALUES (1, 'Music Festival', 'A weekend of live music', '2023-06-15', '18:00:00', 2, 1);
+
+INSERT INTO Event (EventID, Title, Description, Date, Time, VenueID, OrganizerID)
+VALUES (2, 'Tech Conference', 'Cutting-edge tech talks', '2023-09-20', '09:00:00', 1, 2);
+
+INSERT INTO Event (EventID, Title, Description, Date, Time, VenueID, OrganizerID)
+VALUES (3, 'ISKCON Visit', 'Spitural Visit to Iskcon Ludhiana', '2023-09-25', '09:00:00', 3, 3);
+
+SELECT * FROM Venue;
+
+SELECT * FROM Event WHERE OrganizerID = 1;
+
+UPDATE Venue SET Capacity = 3500 WHERE VenueID = 1;
+
+SELECT * FROM Attendee WHERE AttendeeID = 1;
+
+UPDATE Attendee SET Email = 'chandan1012004@gmail.com' WHERE AttendeeID = 1;
+
+SELECT * FROM Event;
+
+DELETE FROM Event WHERE EventID = 2;
+
+DELETE FROM Attendee WHERE AttendeeID = 1;
+
+-- Drop DATABASE EventManagement;
