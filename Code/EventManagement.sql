@@ -88,8 +88,6 @@ CREATE TABLE EventOrganizer (
     FOREIGN KEY (OrganizerID) REFERENCES Organizer(OrganizerID)
 );
 
-
-
 DROP TABLE EventOrganizer;
 DROP TABLE EventVenue;
 
@@ -147,5 +145,69 @@ SELECT * FROM Event;
 DELETE FROM Event WHERE EventID = 2;
 
 DELETE FROM Attendee WHERE AttendeeID = 1;
+
+-- Role Based Access Control
+
+CREATE USER 'user1'@'%' IDENTIFIED BY 'user1@123';
+CREATE USER 'user2'@'%' IDENTIFIED BY 'user2@123';
+CREATE USER 'user3'@'%' IDENTIFIED BY 'user3@123';
+
+-- Create roles
+CREATE ROLE admin;
+CREATE ROLE event_organizer;
+CREATE ROLE attendee;
+
+-- Grant all privileges on all tables to the admin role
+GRANT ALL PRIVILEGES ON your_database.* TO admin;
+
+-- Grant privileges to roles for Venue table
+GRANT SELECT, INSERT, UPDATE, DELETE ON Venue TO event_organizer;
+GRANT SELECT ON Venue TO attendee;
+
+-- Grant privileges to roles for Organizer table
+GRANT SELECT, INSERT, UPDATE, DELETE ON Organizer TO event_organizer;
+
+-- Grant privileges to roles for Attendee table
+GRANT SELECT, INSERT, UPDATE, DELETE ON Attendee TO event_organizer;
+
+-- Grant privileges to roles for Event table
+GRANT SELECT, INSERT, UPDATE, DELETE ON Event TO event_organizer;
+
+-- Grant privileges to roles for Ticket table
+GRANT SELECT, INSERT, UPDATE ON Ticket TO event_organizer;
+
+-- Grant privileges to roles for Feedback table
+GRANT SELECT, INSERT ON Feedback TO event_organizer;
+
+-- Assigning users to roles
+GRANT event_organizer TO user1;
+GRANT attendee TO user2;
+GRANT admin TO user3;
+
+-- INNER JOIN
+SELECT Event.Title, Venue.Name
+FROM Event
+INNER JOIN Venue ON Event.VenueID = Venue.VenueID;
+
+-- LEFT JOIN
+SELECT Event.Title, COALESCE(Venue.Name, 'N/A') AS VenueName
+FROM Event
+LEFT JOIN Venue ON Event.VenueID = Venue.VenueID;
+
+-- Subquery in WHERE clause
+SELECT *
+FROM Event
+WHERE VenueID IN (
+    SELECT VenueID
+    FROM Venue
+    WHERE Capacity > 1000
+);
+
+-- Subquery in SELECT clause
+SELECT Event.Title,
+    (SELECT COUNT(*) 
+     FROM Feedback 
+     WHERE Feedback.EventID = Event.EventID) AS TotalFeedback
+FROM Event;
 
 -- Drop DATABASE EventManagement;
